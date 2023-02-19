@@ -1,0 +1,41 @@
+--Create a supermarket database
+
+CREATE TABLE store (id INTEGER PRIMARY KEY, name TEXT, price INTEGER, section TEXT, popularity INTEGER);
+
+INSERT INTO store VALUES
+(1, "Bananas", 2.99, "produce", 7),
+(2, "Ice_cream", 4.99, "frozen", 9),
+(3, "Hummus", 4.29, "fresh", 6),
+(4, "Pasta", 1.09, "dry_goods", 9),
+(5, "Chicken", 7.45, "deli", 8),
+(6, "Trash_bags", 1.09, "home", 7),
+(7, "Tuna", 2.59, "canned", 5),
+(8, "Baguette", 0.70, "fresh", 10),
+(9, "Fish_fingers", 4.26, "frozen", 7),
+(10, "Flowers", 5.99, "fresh", 4),
+(11, "Oranges", 3.29, "produce", 8),
+(12, "Yogurt", 4.50, "fresh", 6),
+(13, "Peas", 2.29, "frozen", 7),
+(14, "Coffee", 5.40, "dry_goods", 9),
+(15, "Candles", 6.99, "home", 2);
+
+--display the database ordered by price from most to least expensive.
+SELECT * FROM store ORDER BY price DESC;
+
+--display average price of items.
+SELECT AVG(price) FROM store;
+
+--display the three most popular items.
+SELECT name, price, popularity FROM store ORDER BY popularity desc LIMIT 3;
+
+--display the three least popular items.
+SELECT name, price, popularity FROM store ORDER BY popularity asc LIMIT 3;
+
+--display the most expensive item.
+SELECT name, MAX(price) FROM store;
+
+--display the cheapest item.
+SELECT name, MIN(price) FROM store;
+
+--display number of fresh and produce items.
+SELECT COUNT(id), section AS fresh_food FROM store WHERE section = "fresh" OR section = "produce";
