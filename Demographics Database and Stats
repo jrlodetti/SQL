@@ -255,11 +255,11 @@ SELECT name, fertility_rate, MAX(net_migrants) AS "most_immigrants" FROM countri
 --display the country with the lowest number of immigrants (highest number of people leaving).
 SELECT name, fertility_rate, MIN(net_migrants) AS "most_emigrants" FROM countries;
 
---display the countries where the fertility rate and the amount of immigrants is high.
+--display the countries where the fertility rate and the amount of immigrants are both high.
 SELECT name, fertility_rate, net_migrants FROM countries
     WHERE fertility_rate > 5 AND net_migrants > 0;
     
---display the countries where the fertility rate and the amount of immigrants is low.
+--display the countries where the fertility rate and the amount of immigrants are both low.
 SELECT name, fertility_rate, net_migrants FROM countries
     WHERE fertility_rate < 1.3 AND net_migrants < 0;
     
@@ -269,7 +269,7 @@ SELECT COUNT(name), median_age
     GROUP BY median_age
     HAVING median_age > 45;
     
---display the countries where the average age is lower than 20 (ie. younger population).
+--display the countries where the average age is lower than 20 (ie. young population).
 SELECT COUNT(name), median_age
     FROM countries
     GROUP BY median_age
@@ -278,7 +278,7 @@ SELECT COUNT(name), median_age
 --what is the average age across all countries?
 SELECT AVG(median_age) FROM countries;
 
---display how many countries are above, equal to, and below the global average.
+--display how many countries are above, equal to, or below the global average.
 SELECT COUNT(name),
     CASE 
     WHEN median_age > 30 THEN "above_global_avg"
