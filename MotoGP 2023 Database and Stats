@@ -1,0 +1,134 @@
+--create a table of 2023 MotoGP riders, including name, nationality, year of birth, and bike brand.
+
+CREATE TABLE riders (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, nationality TEXT, birth_year INTEGER, bike TEXT);
+
+INSERT INTO riders (name, nationality, birth_year, bike) VALUES ("Francesco Bagnaia", "Italian", 1997, "Ducati"),
+("Johann Zarco", "French", 1990, "Ducati"),
+("Luca Marini", "Italian", 1997, "Ducati"),
+("Maverick Vinales", "Spanish", 1995, "Aprilia"),
+("Fabio Quartararo", "French", 1999, "Yamaha"),
+("Franco Morbidelli", "Italian", 1994, "Yamaha"),
+("Enea Bastianini", "Italian", 1997, "Ducati"),
+("Raul Fernandez", "Spanish", 2000, "Aprilia"),
+("Takaaki Nakagami", "Japanese", 1992, "Honda"),
+("Brad Binder", "South African", 1995, "KTM"),
+("Joan Mir", "Spanish", 1997, "Honda"),
+("Augusto Fernandez", "Spanish", 1997, "GasGas"),
+("Aleix Espargaro", "Spanish", 1989, "Aprilia"),
+("Alex Rins", "Spanish", 1995, "Honda"),
+("Jack Miller", "Australian", 1995, "KTM"),
+("Pol Espargaro", "Spanish", 1991, "GasGas"),
+("Fabio Di Giannantonio", "Italian", 1998, "Ducati"),
+("Marco Bezzecchi", "Italian", 1998, "Ducati"),
+("Alex Marquez", "Spanish", 1996, "Ducati"),
+("Miguel Oliviera", "Portuguese", 1995, "Aprilia"),
+("Jorge Martin", "Spanish", 1998, "Ducati"),
+("Marc Marquez", "Spanish", 1993, "Honda");
+
+--create a table for victories, including world championship titles, grand prix wins, podiums, and pole positions.
+CREATE TABLE victories (id INTEGER PRIMARY KEY AUTOINCREMENT, rider_id INTEGER, world_championship_titles INTEGER, grand_prix_wins INTEGER, podiums INTEGER, poles INTEGER);
+
+INSERT INTO victories (rider_id, world_championship_titles, grand_prix_wins, podiums, poles) VALUES 
+(1, 2, 21, 43, 18),
+(2, 2, 16, 56, 27),
+(3, 0, 6, 15, 5),
+(4, 1, 25, 71, 24),
+(5, 1, 12, 32, 19),
+(6, 1, 11, 27, 8),
+(7, 1, 10, 40, 10),
+(8, 0, 10, 16, 13),
+(9, 0, 2, 14, 6),
+(10, 1, 17, 40, 7),
+(11, 2, 12, 33, 2),
+(12, 1, 7, 20, 3),
+(13, 0, 1, 9, 4),
+(14, 0, 17, 57, 17),
+(15, 0, 10, 32, 10),
+(16, 1, 15, 52, 20),
+(17, 0, 3, 22, 2),
+(18, 0, 6, 25, 5),
+(19, 2, 12, 40, 15),
+(20, 0, 17, 41, 5),
+(21, 1, 11, 36, 30),
+(22, 8, 85, 139, 91);
+
+--create a table showing teammates and team name
+CREATE TABLE teammates (id INTEGER PRIMARY KEY AUTOINCREMENT, teammate1_id INTEGER, teammate2_id INTEGER, team_name TEXT);
+
+INSERT INTO teammates (teammate1_id, teammate2_id, team_name) VALUES
+(1, 7, "Ducati Lenovo Team"),
+(2, 21, "Prima Pramac Racing"),
+(3, 18, "Mooney VR46 Racing Team"),
+(4, 13, "Aprilia Racing"),
+(5, 6, "Monster Energy Yamaha MotoGP"),
+(8, 20, "RNF MotoGP Team"),
+(9, 14, "LCR Honda"),
+(10, 15, "Redbull KTM Factory Racing"),
+(11, 22, "Repsol Honda Team"),
+(12, 16, "GasGas Factory Racing Tech3"),
+(17, 19, "Gresini Racing MotoGP");
+
+--display numbers of riders of each nationality from most to least.
+SELECT COUNT(*), nationality
+FROM riders
+GROUP BY nationality
+ORDER BY COUNT(*) DESC;
+
+--display the name and age of the oldest rider in the 2023 MotoGP.
+SELECT name, MIN(birth_year), ROUND(2023-(birth_year)) AS oldest_rider
+FROM riders;
+
+--display the name and age of the youngest rider in the 2023 MotoGP.
+SELECT name, MAX(birth_year), ROUND(2023-(birth_year)) AS youngest_rider
+FROM riders;
+
+--display number of bikes of each brand on the 2023 circuit.
+SELECT COUNT(*), bike
+FROM riders
+GROUP BY bike
+ORDER BY COUNT(*) DESC;
+
+--display the rider with the most victories.
+SELECT r.name, MAX(v.world_championship_titles), MAX(v.grand_prix_wins), MAX(v.podiums), MAX(v.poles)
+FROM victories v
+JOIN riders r
+ON r.id = v.rider_id;
+
+--display which bike brands have won world championship titles and how many.
+SELECT r.bike, v.world_championship_titles
+FROM victories v
+JOIN riders r
+ON r.id = v.rider_id
+GROUP BY bike
+ORDER BY world_championship_titles DESC;
+
+--display the smallest amount of pole positions achieved.
+SELECT MIN(poles)
+FROM victories;
+
+--display the biggest amount of pole positions achieved.
+SELECT MAX(poles)
+FROM victories;
+
+--display the average number of pole positions achieved.
+SELECT AVG(poles)
+FROM victories;
+
+--display number of pole positions according to category: high, average, and low.
+SELECT COUNT(*),
+    CASE 
+    WHEN poles > 16 THEN "high_poles"
+    WHEN poles BETWEEN 14 AND 16 THEN "avg_poles"
+    ELSE "low_poles"
+    END AS "number_of_poles"
+    FROM victories
+    GROUP BY number_of_poles
+    ORDER BY poles DESC;
+    
+--display the names of teammates and their team name.
+SELECT r1.name, r2.name, teammates.team_name
+FROM teammates
+JOIN riders r1
+ON r1.id = teammates.teammate1_id
+JOIN riders r2
+ON r2.id = teammates.teammate2_id;
