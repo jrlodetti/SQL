@@ -46,3 +46,9 @@ ON customers.order_id = FebSales.orderid
 WHERE FebSales.quantity > 2
 AND length(orderid) = 6
 AND orderid <> 'Order ID';
+
+--#8. List all the products sold in Los Angeles in February, and include how many of each were sold.
+SELECT distinct Product, sum(Quantity)
+FROM BIT_DB.FebSales
+WHERE location like '%Los Angeles%'
+GROUP BY Product;
